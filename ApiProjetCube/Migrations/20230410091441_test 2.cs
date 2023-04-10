@@ -5,7 +5,7 @@
 namespace ApiProjetCube.Migrations
 {
     /// <inheritdoc />
-    public partial class miseenplacedelacléprimaireautoincrémentalepourCategory : Migration
+    public partial class test2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

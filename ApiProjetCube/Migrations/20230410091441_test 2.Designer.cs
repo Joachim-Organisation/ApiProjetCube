@@ -3,6 +3,7 @@ using System;
 using ApiProjetCube.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiProjetCube.Migrations
 {
     [DbContext(typeof(TestContext))]
-    partial class TestContextModelSnapshot : ModelSnapshot
+    [Migration("20230410091441_test 2")]
+    partial class test2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -189,10 +192,6 @@ namespace ApiProjetCube.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("Prenom")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("password")
                         .IsRequired()
                         .HasColumnType("longtext");
 

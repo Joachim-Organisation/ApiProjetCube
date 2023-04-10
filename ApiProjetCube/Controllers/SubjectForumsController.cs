@@ -23,24 +23,24 @@ namespace ApiProjetCube.Controllers
 
         // GET: api/SubjectForums
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<SubjectForum>>> GetSubjectForum()
+        public async Task<ActionResult<IEnumerable<SubjectForum>>> GetSubjectsForums()
         {
-          if (_context.SubjectForum == null)
+          if (_context.SubjectsForums == null)
           {
               return NotFound();
           }
-            return await _context.SubjectForum.ToListAsync();
+            return await _context.SubjectsForums.ToListAsync();
         }
 
         // GET: api/SubjectForums/5
         [HttpGet("{id}")]
         public async Task<ActionResult<SubjectForum>> GetSubjectForum(int id)
         {
-          if (_context.SubjectForum == null)
+          if (_context.SubjectsForums == null)
           {
               return NotFound();
           }
-            var subjectForum = await _context.SubjectForum.FindAsync(id);
+            var subjectForum = await _context.SubjectsForums.FindAsync(id);
 
             if (subjectForum == null)
             {
@@ -86,11 +86,11 @@ namespace ApiProjetCube.Controllers
         [HttpPost]
         public async Task<ActionResult<SubjectForum>> PostSubjectForum(SubjectForum subjectForum)
         {
-          if (_context.SubjectForum == null)
+          if (_context.SubjectsForums == null)
           {
-              return Problem("Entity set 'TestContext.SubjectForum'  is null.");
+              return Problem("Entity set 'TestContext.SubjectsForums'  is null.");
           }
-            _context.SubjectForum.Add(subjectForum);
+            _context.SubjectsForums.Add(subjectForum);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetSubjectForum", new { id = subjectForum.Id }, subjectForum);
@@ -100,17 +100,17 @@ namespace ApiProjetCube.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSubjectForum(int id)
         {
-            if (_context.SubjectForum == null)
+            if (_context.SubjectsForums == null)
             {
                 return NotFound();
             }
-            var subjectForum = await _context.SubjectForum.FindAsync(id);
+            var subjectForum = await _context.SubjectsForums.FindAsync(id);
             if (subjectForum == null)
             {
                 return NotFound();
             }
 
-            _context.SubjectForum.Remove(subjectForum);
+            _context.SubjectsForums.Remove(subjectForum);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -118,7 +118,7 @@ namespace ApiProjetCube.Controllers
 
         private bool SubjectForumExists(int id)
         {
-            return (_context.SubjectForum?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.SubjectsForums?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

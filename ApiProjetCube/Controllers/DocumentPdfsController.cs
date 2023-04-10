@@ -12,55 +12,55 @@ namespace ApiProjetCube.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoriesController : ControllerBase
+    public class DocumentPdfsController : ControllerBase
     {
         private readonly TestContext _context;
 
-        public CategoriesController(TestContext context)
+        public DocumentPdfsController(TestContext context)
         {
             _context = context;
         }
 
-        // GET: api/Categories
+        // GET: api/DocumentPdfs
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
+        public async Task<ActionResult<IEnumerable<DocumentPdf>>> GetDocumentPdfs()
         {
-          if (_context.Categories == null)
+          if (_context.DocumentPdfs == null)
           {
               return NotFound();
           }
-            return await _context.Categories.ToListAsync();
+            return await _context.DocumentPdfs.ToListAsync();
         }
 
-        // GET: api/Categories/5
+        // GET: api/DocumentPdfs/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Category>> GetCategory(int id)
+        public async Task<ActionResult<DocumentPdf>> GetDocumentPdf(int id)
         {
-          if (_context.Categories == null)
+          if (_context.DocumentPdfs == null)
           {
               return NotFound();
           }
-            var category = await _context.Categories.FindAsync(id);
+            var documentPdf = await _context.DocumentPdfs.FindAsync(id);
 
-            if (category == null)
+            if (documentPdf == null)
             {
                 return NotFound();
             }
 
-            return category;
+            return documentPdf;
         }
 
-        // PUT: api/Categories/5
+        // PUT: api/DocumentPdfs/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCategory(int id, Category category)
+        public async Task<IActionResult> PutDocumentPdf(int id, DocumentPdf documentPdf)
         {
-            if (id != category.Id)
+            if (id != documentPdf.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(category).State = EntityState.Modified;
+            _context.Entry(documentPdf).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +68,7 @@ namespace ApiProjetCube.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CategoryExists(id))
+                if (!DocumentPdfExists(id))
                 {
                     return NotFound();
                 }
@@ -81,44 +81,44 @@ namespace ApiProjetCube.Controllers
             return NoContent();
         }
 
-        // POST: api/Categories
+        // POST: api/DocumentPdfs
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Category>> PostCategory(Category category)
+        public async Task<ActionResult<DocumentPdf>> PostDocumentPdf(DocumentPdf documentPdf)
         {
-          if (_context.Categories == null)
+          if (_context.DocumentPdfs == null)
           {
-              return Problem("Entity set 'TestContext.Categories'  is null.");
+              return Problem("Entity set 'TestContext.DocumentPdfs'  is null.");
           }
-            _context.Categories.Add(category);
+            _context.DocumentPdfs.Add(documentPdf);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCategory", new { id = category.Id }, category);
+            return CreatedAtAction("GetDocumentPdf", new { id = documentPdf.Id }, documentPdf);
         }
 
-        // DELETE: api/Categories/5
+        // DELETE: api/DocumentPdfs/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCategory(int id)
+        public async Task<IActionResult> DeleteDocumentPdf(int id)
         {
-            if (_context.Categories == null)
+            if (_context.DocumentPdfs == null)
             {
                 return NotFound();
             }
-            var category = await _context.Categories.FindAsync(id);
-            if (category == null)
+            var documentPdf = await _context.DocumentPdfs.FindAsync(id);
+            if (documentPdf == null)
             {
                 return NotFound();
             }
 
-            _context.Categories.Remove(category);
+            _context.DocumentPdfs.Remove(documentPdf);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool CategoryExists(int id)
+        private bool DocumentPdfExists(int id)
         {
-            return (_context.Categories?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.DocumentPdfs?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

@@ -12,55 +12,55 @@ namespace ApiProjetCube.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoriesController : ControllerBase
+    public class RessourcesController : ControllerBase
     {
         private readonly TestContext _context;
 
-        public CategoriesController(TestContext context)
+        public RessourcesController(TestContext context)
         {
             _context = context;
         }
 
-        // GET: api/Categories
+        // GET: api/Ressources
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
+        public async Task<ActionResult<IEnumerable<Ressource>>> GetRessources()
         {
-          if (_context.Categories == null)
+          if (_context.Ressources == null)
           {
               return NotFound();
           }
-            return await _context.Categories.ToListAsync();
+            return await _context.Ressources.ToListAsync();
         }
 
-        // GET: api/Categories/5
+        // GET: api/Ressources/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Category>> GetCategory(int id)
+        public async Task<ActionResult<Ressource>> GetRessource(int id)
         {
-          if (_context.Categories == null)
+          if (_context.Ressources == null)
           {
               return NotFound();
           }
-            var category = await _context.Categories.FindAsync(id);
+            var ressource = await _context.Ressources.FindAsync(id);
 
-            if (category == null)
+            if (ressource == null)
             {
                 return NotFound();
             }
 
-            return category;
+            return ressource;
         }
 
-        // PUT: api/Categories/5
+        // PUT: api/Ressources/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCategory(int id, Category category)
+        public async Task<IActionResult> PutRessource(int id, Ressource ressource)
         {
-            if (id != category.Id)
+            if (id != ressource.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(category).State = EntityState.Modified;
+            _context.Entry(ressource).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +68,7 @@ namespace ApiProjetCube.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CategoryExists(id))
+                if (!RessourceExists(id))
                 {
                     return NotFound();
                 }
@@ -81,44 +81,44 @@ namespace ApiProjetCube.Controllers
             return NoContent();
         }
 
-        // POST: api/Categories
+        // POST: api/Ressources
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Category>> PostCategory(Category category)
+        public async Task<ActionResult<Ressource>> PostRessource(Ressource ressource)
         {
-          if (_context.Categories == null)
+          if (_context.Ressources == null)
           {
-              return Problem("Entity set 'TestContext.Categories'  is null.");
+              return Problem("Entity set 'TestContext.Ressources'  is null.");
           }
-            _context.Categories.Add(category);
+            _context.Ressources.Add(ressource);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCategory", new { id = category.Id }, category);
+            return CreatedAtAction("GetRessource", new { id = ressource.Id }, ressource);
         }
 
-        // DELETE: api/Categories/5
+        // DELETE: api/Ressources/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCategory(int id)
+        public async Task<IActionResult> DeleteRessource(int id)
         {
-            if (_context.Categories == null)
+            if (_context.Ressources == null)
             {
                 return NotFound();
             }
-            var category = await _context.Categories.FindAsync(id);
-            if (category == null)
+            var ressource = await _context.Ressources.FindAsync(id);
+            if (ressource == null)
             {
                 return NotFound();
             }
 
-            _context.Categories.Remove(category);
+            _context.Ressources.Remove(ressource);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool CategoryExists(int id)
+        private bool RessourceExists(int id)
         {
-            return (_context.Categories?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Ressources?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

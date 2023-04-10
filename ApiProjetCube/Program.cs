@@ -1,4 +1,5 @@
 using ApiProjetCube.Entities;
+using ApiProjetCube.Models;
 using FluentAssertions.Common;
 using Microsoft.EntityFrameworkCore;
 using System.Configuration;
@@ -25,9 +26,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseHttpLogging();
 
 app.MapControllers();
 

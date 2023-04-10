@@ -1,35 +1,87 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using ApiProjetCube.Models;
 using Microsoft.EntityFrameworkCore;
-using ApiProjetCube.Models;
-using Org.BouncyCastle.Crypto.Tls;
-using System.Configuration;
 
-namespace ApiProjetCube.Entities;
-
-public partial class TestContext : DbContext
+namespace ApiProjetCube.Entities
 {
-    public TestContext()
+    public partial class TestContext : DbContext
     {
+        public TestContext(DbContextOptions<TestContext> options)
+            : base(options)
+        {
+        }
+
+        public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<DocumentImage> DocumentImages { get; set; }
+        public virtual DbSet<DocumentPdf> DocumentPdfs { get; set; }
+        public virtual DbSet<MessageForum> MessagesForums { get; set; }
+        public virtual DbSet<Ressource> Ressources { get; set; }
+        public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<SubjectForum> SubjectsForums { get; set; }
+        public virtual DbSet<Utilisateur> Utilisateurs { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<DocumentImage>(entity =>
+            {
+                entity.HasOne(d => d.Ressource)
+                    .WithMany(p => p.DocumentImages)
+                    .HasForeignKey(d => d.IdRessource)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("FK_DocumentImages_Ressources");
+            });
+
+            modelBuilder.Entity<DocumentPdf>(entity =>
+            {
+                entity.HasOne(d => d.Ressource)
+                    .WithMany(p => p.DocumentPdfs)
+                    .HasForeignKey(d => d.IdRessource)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("FK_DocumentPdfs_Ressources");
+            });
+
+            modelBuilder.Entity<MessageForum>(entity =>
+            {
+                entity.HasOne(d => d.Utilisateur)
+                    .WithMany(p => p.MessagesForums)
+                    .HasForeignKey(d => d.IdUtilisateur)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("FK_MessagesForums_Utilisateurs");
+            });
+
+            modelBuilder.Entity<Ressource>(entity =>
+            {
+                entity.HasOne(d => d.Category)
+                    .WithMany(p => p.Ressources)
+                    .HasForeignKey(d => d.IdCategory)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("FK_Ressources_Categories");
+
+                entity.HasOne(d => d.Utilisateur)
+                    .WithMany(p => p.Ressources)
+                    .HasForeignKey(d => d.IdUtilisateur)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("FK_Ressources_Utilisateurs");
+            });
+
+            modelBuilder.Entity<SubjectForum>(entity =>
+            {
+                entity.HasOne(d => d.Category)
+                    .WithMany(p => p.SubjectsForums)
+                    .HasForeignKey(d => d.IdCategorie)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("FK_SubjectsForums_Categories");
+            });
+
+            modelBuilder.Entity<Utilisateur>(entity =>
+            {
+                entity.HasOne(d => d.Role)
+                    .WithMany(p => p.Utilisateurs)
+                    .HasForeignKey(d => d.IdRole)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("FK_Utilisateurs_Roles");
+            });
+
+         
+        }
     }
-
-    public TestContext(DbContextOptions<TestContext> options)
-        : base(options)
-    {
-    }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseMySQL("server=localhost;port=3306;user=root;password=Corentin72;database=test");
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        OnModelCreatingPartial(modelBuilder);
-    }
-
-    partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-
-    public DbSet<ApiProjetCube.Models.SubjectForum>? SubjectForum { get; set; }
-
-    public DbSet<ApiProjetCube.Models.Category>? Category { get; set; }
 }

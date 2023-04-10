@@ -3,14 +3,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ApiProjetCube.Models
 {
-    public class Category
+    public class DocumentImage
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public string Nom { get; set; }
+        [ForeignKey("Ressource")]
+        public int IdRessource { get; set; }
+        public string LienImage { get; set; }
 
-        public virtual List<Ressource> ?Ressources { get; set; }
-        public virtual List<SubjectForum> ?SubjectsForums { get; set; }
+        public virtual Ressource Ressource { get; set; }
     }
 }

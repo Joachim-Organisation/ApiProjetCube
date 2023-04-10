@@ -12,55 +12,55 @@ namespace ApiProjetCube.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoriesController : ControllerBase
+    public class RolesController : ControllerBase
     {
         private readonly TestContext _context;
 
-        public CategoriesController(TestContext context)
+        public RolesController(TestContext context)
         {
             _context = context;
         }
 
-        // GET: api/Categories
+        // GET: api/Roles
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
+        public async Task<ActionResult<IEnumerable<Role>>> GetRoles()
         {
-          if (_context.Categories == null)
+          if (_context.Roles == null)
           {
               return NotFound();
           }
-            return await _context.Categories.ToListAsync();
+            return await _context.Roles.ToListAsync();
         }
 
-        // GET: api/Categories/5
+        // GET: api/Roles/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Category>> GetCategory(int id)
+        public async Task<ActionResult<Role>> GetRole(int id)
         {
-          if (_context.Categories == null)
+          if (_context.Roles == null)
           {
               return NotFound();
           }
-            var category = await _context.Categories.FindAsync(id);
+            var role = await _context.Roles.FindAsync(id);
 
-            if (category == null)
+            if (role == null)
             {
                 return NotFound();
             }
 
-            return category;
+            return role;
         }
 
-        // PUT: api/Categories/5
+        // PUT: api/Roles/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCategory(int id, Category category)
+        public async Task<IActionResult> PutRole(int id, Role role)
         {
-            if (id != category.Id)
+            if (id != role.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(category).State = EntityState.Modified;
+            _context.Entry(role).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +68,7 @@ namespace ApiProjetCube.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CategoryExists(id))
+                if (!RoleExists(id))
                 {
                     return NotFound();
                 }
@@ -81,44 +81,44 @@ namespace ApiProjetCube.Controllers
             return NoContent();
         }
 
-        // POST: api/Categories
+        // POST: api/Roles
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Category>> PostCategory(Category category)
+        public async Task<ActionResult<Role>> PostRole(Role role)
         {
-          if (_context.Categories == null)
+          if (_context.Roles == null)
           {
-              return Problem("Entity set 'TestContext.Categories'  is null.");
+              return Problem("Entity set 'TestContext.Roles'  is null.");
           }
-            _context.Categories.Add(category);
+            _context.Roles.Add(role);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCategory", new { id = category.Id }, category);
+            return CreatedAtAction("GetRole", new { id = role.Id }, role);
         }
 
-        // DELETE: api/Categories/5
+        // DELETE: api/Roles/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCategory(int id)
+        public async Task<IActionResult> DeleteRole(int id)
         {
-            if (_context.Categories == null)
+            if (_context.Roles == null)
             {
                 return NotFound();
             }
-            var category = await _context.Categories.FindAsync(id);
-            if (category == null)
+            var role = await _context.Roles.FindAsync(id);
+            if (role == null)
             {
                 return NotFound();
             }
 
-            _context.Categories.Remove(category);
+            _context.Roles.Remove(role);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool CategoryExists(int id)
+        private bool RoleExists(int id)
         {
-            return (_context.Categories?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Roles?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

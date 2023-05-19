@@ -13,7 +13,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<TestContext>(opt => opt.UseMySQL("server=localhost;port=3306;user=root;password=Corentin72;database=test"));
+builder.Services.AddDbContext<TestContext>(opt => opt.UseMySQL("server=localhost;port=3306;user=root;password=Corentin72;database=test;Allow Zero Datetime=true"));
 
 var app = builder.Build();
 

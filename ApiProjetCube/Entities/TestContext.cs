@@ -39,14 +39,20 @@ namespace ApiProjetCube.Entities
                     .HasConstraintName("FK_DocumentPdfs_Ressources");
             });
 
-            modelBuilder.Entity<MessageForum>(entity =>
-            {
-                entity.HasOne(d => d.Utilisateur)
-                    .WithMany(p => p.MessagesForums)
-                    .HasForeignKey(d => d.IdUtilisateur)
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("FK_MessagesForums_Utilisateurs");
-            });
+            //modelBuilder.Entity<MessageForum>(entity =>
+            //{
+            //    entity.HasOne(d => d.Utilisateur)
+            //        .WithMany(p => p.MessagesForums)
+            //        .HasForeignKey(d => d.IdUtilisateur)
+            //        .OnDelete(DeleteBehavior.Cascade)
+            //        .HasConstraintName("FK_MessagesForums_Utilisateurs");
+
+            //    //    entity.HasOne(d => d.SubjectForum)
+            //    //        .WithMany(p => p.MessageForums)
+            //    //        .HasForeignKey(d => d.IdSubjectForum)
+            //    //        .OnDelete(DeleteBehavior.Cascade)
+            //    //        .HasConstraintName("FK_MessagesForums_SubjectForums");
+            //});
 
             modelBuilder.Entity<Ressource>(entity =>
             {
@@ -70,6 +76,12 @@ namespace ApiProjetCube.Entities
                     .HasForeignKey(d => d.IdCategorie)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_SubjectsForums_Categories");
+
+                //entity.HasOne(d => d.Utilisateur)
+                //    .WithMany(p => p.SubjectsForums)
+                //    .HasForeignKey(d => d.IdUtilisateur)
+                //    .OnDelete(DeleteBehavior.Cascade)
+                //    .HasConstraintName("FK_SubjectsForums_Utilisateur");
             });
 
             modelBuilder.Entity<Utilisateur>(entity =>

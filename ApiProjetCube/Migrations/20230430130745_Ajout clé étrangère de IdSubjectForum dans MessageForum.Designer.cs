@@ -3,6 +3,7 @@ using System;
 using ApiProjetCube.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiProjetCube.Migrations
 {
     [DbContext(typeof(TestContext))]
-    partial class TestContextModelSnapshot : ModelSnapshot
+    [Migration("20230430130745_Ajout clé étrangère de IdSubjectForum dans MessageForum")]
+    partial class AjoutcléétrangèredeIdSubjectForumdansMessageForum
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -84,7 +87,7 @@ namespace ApiProjetCube.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<DateTimeOffset?>("DateCreation")
+                    b.Property<DateTime>("DateCreation")
                         .HasColumnType("datetime(6)");
 
                     b.Property<int>("IdSubjectForum")
@@ -93,11 +96,14 @@ namespace ApiProjetCube.Migrations
                     b.Property<int>("IdUtilisateur")
                         .HasColumnType("int");
 
+                    b.Property<int?>("SubjectForumId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("IdSubjectForum");
 
-                    b.HasIndex("IdUtilisateur");
+                    b.HasIndex("SubjectForumId");
 
                     b.ToTable("MessagesForums");
                 });
@@ -243,19 +249,16 @@ namespace ApiProjetCube.Migrations
 
             modelBuilder.Entity("ApiProjetCube.Models.MessageForum", b =>
                 {
-                    b.HasOne("ApiProjetCube.Models.SubjectForum", "SubjectForum")
-                        .WithMany("MessageForums")
+                    b.HasOne("ApiProjetCube.Models.Utilisateur", "Utilisateur")
+                        .WithMany("MessagesForums")
                         .HasForeignKey("IdSubjectForum")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_MessagesForums_Utilisateurs");
 
-                    b.HasOne("ApiProjetCube.Models.Utilisateur", "Utilisateur")
-                        .WithMany()
-                        .HasForeignKey("IdUtilisateur")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("SubjectForum");
+                    b.HasOne("ApiProjetCube.Models.SubjectForum", null)
+                        .WithMany("MessageForums")
+                        .HasForeignKey("SubjectForumId");
 
                     b.Navigation("Utilisateur");
                 });
@@ -291,10 +294,11 @@ namespace ApiProjetCube.Migrations
                         .HasConstraintName("FK_SubjectsForums_Categories");
 
                     b.HasOne("ApiProjetCube.Models.Utilisateur", "Utilisateur")
-                        .WithMany()
+                        .WithMany("SubjectsForums")
                         .HasForeignKey("IdUtilisateur")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_SubjectsForums_Utilisateur");
 
                     b.Navigation("Category");
 
@@ -339,7 +343,11 @@ namespace ApiProjetCube.Migrations
 
             modelBuilder.Entity("ApiProjetCube.Models.Utilisateur", b =>
                 {
+                    b.Navigation("MessagesForums");
+
                     b.Navigation("Ressources");
+
+                    b.Navigation("SubjectsForums");
                 });
 #pragma warning restore 612, 618
         }

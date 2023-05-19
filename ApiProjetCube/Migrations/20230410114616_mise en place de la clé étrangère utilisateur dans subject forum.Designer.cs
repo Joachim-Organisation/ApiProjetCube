@@ -3,6 +3,7 @@ using System;
 using ApiProjetCube.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiProjetCube.Migrations
 {
     [DbContext(typeof(TestContext))]
-    partial class TestContextModelSnapshot : ModelSnapshot
+    [Migration("20230410114616_mise en place de la clé étrangère utilisateur dans subject forum")]
+    partial class miseenplacedelacléétrangèreutilisateurdanssubjectforum
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -84,18 +87,13 @@ namespace ApiProjetCube.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<DateTimeOffset?>("DateCreation")
+                    b.Property<DateTime>("DateCreation")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<int>("IdSubjectForum")
-                        .HasColumnType("int");
 
                     b.Property<int>("IdUtilisateur")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("IdSubjectForum");
 
                     b.HasIndex("IdUtilisateur");
 
@@ -169,10 +167,6 @@ namespace ApiProjetCube.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("text")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.HasKey("Id");
 
                     b.HasIndex("IdCategorie");
@@ -243,19 +237,12 @@ namespace ApiProjetCube.Migrations
 
             modelBuilder.Entity("ApiProjetCube.Models.MessageForum", b =>
                 {
-                    b.HasOne("ApiProjetCube.Models.SubjectForum", "SubjectForum")
-                        .WithMany("MessageForums")
-                        .HasForeignKey("IdSubjectForum")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ApiProjetCube.Models.Utilisateur", "Utilisateur")
-                        .WithMany()
+                        .WithMany("MessagesForums")
                         .HasForeignKey("IdUtilisateur")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("SubjectForum");
+                        .IsRequired()
+                        .HasConstraintName("FK_MessagesForums_Utilisateurs");
 
                     b.Navigation("Utilisateur");
                 });
@@ -291,10 +278,11 @@ namespace ApiProjetCube.Migrations
                         .HasConstraintName("FK_SubjectsForums_Categories");
 
                     b.HasOne("ApiProjetCube.Models.Utilisateur", "Utilisateur")
-                        .WithMany()
+                        .WithMany("SubjectsForums")
                         .HasForeignKey("IdUtilisateur")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_SubjectsForums_Utilisateur");
 
                     b.Navigation("Category");
 
@@ -332,14 +320,13 @@ namespace ApiProjetCube.Migrations
                     b.Navigation("Utilisateurs");
                 });
 
-            modelBuilder.Entity("ApiProjetCube.Models.SubjectForum", b =>
-                {
-                    b.Navigation("MessageForums");
-                });
-
             modelBuilder.Entity("ApiProjetCube.Models.Utilisateur", b =>
                 {
+                    b.Navigation("MessagesForums");
+
                     b.Navigation("Ressources");
+
+                    b.Navigation("SubjectsForums");
                 });
 #pragma warning restore 612, 618
         }

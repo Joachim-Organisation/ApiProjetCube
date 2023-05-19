@@ -21,9 +21,10 @@ namespace ApiProjetCube.Models
 
         public virtual Role ?Role { get; set; }
 
-        public virtual List<MessageForum> ?MessagesForums { get; set; }
+        //public virtual List<MessageForum> ?MessagesForums { get; set; }
 
         public virtual List<Ressource> ?Ressources { get; set; }
+        //public virtual List<SubjectForum> ?SubjectsForums { get; set;}
 
     }
 }

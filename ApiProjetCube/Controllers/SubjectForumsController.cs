@@ -50,6 +50,37 @@ namespace ApiProjetCube.Controllers
             return subjectForum;
         }
 
+        [HttpGet("ByCategorieId/{id}")]
+        public async Task<ActionResult<IEnumerable<SubjectForum>>> GetSubjectForumByCategorieId(int id)
+        {
+            if (_context.SubjectsForums == null)
+            {
+                return NotFound();
+            }
+            var subjectForums = await _context.SubjectsForums.Where(s => s.IdCategorie == id).ToListAsync();
+
+            if (subjectForums == null || subjectForums.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return subjectForums;
+        }
+
+        // GET: api/SubjectForums/ByUserId/5
+        [HttpGet("ByUserId/{id}")]
+        public async Task<ActionResult<IEnumerable<SubjectForum>>> GetSubjectForumsByUserId(int id)
+        {
+            var subjectForums = await _context.SubjectsForums.Where(s => s.IdUtilisateur == id).ToListAsync();
+            if (subjectForums == null || subjectForums.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return subjectForums;
+        }
+
+
         // PUT: api/SubjectForums/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]

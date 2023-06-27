@@ -23,9 +23,9 @@ jobs:
           TOKEN=$(echo "${{ secrets.GITHUB_TOKEN }}")
 
           # Extraire l'image du registre des packages
-          docker pull docker.pkg.github.com/Joachim-Organisation/ApiProjetCube/apiprojetcube:latest
+          docker pull docker.pkg.github.com/Joachim-Organisation/apiprojetcube/apiprojetcube:latest
 
           # Exécuter le scan Trivy sur l'image extraite
-          docker run --rm -v "$(pwd):/src" aquasec/trivy docker.pkg.github.com/Joachim-Organisation/ApiProjetCube/apiprojetcube:latest
+          docker run --rm -v "$(pwd):/src" aquasec/trivy docker.pkg.github.com/Joachim-Organisation/apiprojetcube/apiprojetcube:latest
 
 

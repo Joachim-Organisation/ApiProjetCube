@@ -12,7 +12,7 @@ WORKDIR /src
 RUN dotnet build "ApiProjetCube.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "./ApiProjetCube/ApiProjetCube.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "ApiProjetCube.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
 WORKDIR /app

@@ -16,14 +16,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Install wget
-        run: sudo apt-get update && sudo apt-get install -y wget
-
-      - name: Install Trivy
-        run: |
-          wget https://github.com/aquasecurity/trivy/releases/download/v0.19.2/trivy_0.19.2_Linux-64bit.tar.gz
-          tar zxvf trivy_0.19.2_Linux-64bit.tar.gz
-          sudo mv trivy /usr/local/bin/
-          sudo chmod +x /usr/local/bin/trivy
+      - name: Run Trivy scan
+        run: trivy image apiprojetcube
 
 

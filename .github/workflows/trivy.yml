@@ -27,6 +27,6 @@ jobs:
           docker pull docker.pkg.github.com/joachim-organisation/apiprojetcube/apiprojetcube:latest
 
           # Exécuter le scan Trivy sur l'image extraite
-          docker run --rm -v "$(pwd):/src" aquasec/trivy docker.pkg.github.com/joachim-organisation/apiprojetcube/apiprojetcube:latest
+          docker run --rm -v "$(pwd):/src" aquasec/trivy docker.pkg.github.com/joachim-organisation/apiprojetcube/apiprojetcube:release
 
 

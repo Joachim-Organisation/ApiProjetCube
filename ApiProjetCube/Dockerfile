@@ -10,7 +10,7 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["ApiProjetCube/ApiProjetCube.csproj", "ApiProjetCube/"]
+COPY ["ApiProjetCube.csproj", "./"]
 RUN dotnet restore "ApiProjetCube/ApiProjetCube.csproj"
 COPY . .
 WORKDIR "/src/ApiProjetCube"

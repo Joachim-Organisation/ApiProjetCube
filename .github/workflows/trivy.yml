@@ -23,6 +23,7 @@ jobs:
           TOKEN=$(echo "${{ secrets.GITHUB_TOKEN }}")
 
           # Extraire l'image du registre des packages
+          docker login docker.pkg.github.com -u joachim-organisation -p "${TOKEN}"
           docker pull docker.pkg.github.com/joachim-organisation/apiprojetcube/apiprojetcube:latest
 
           # Exécuter le scan Trivy sur l'image extraite

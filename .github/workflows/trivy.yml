@@ -1,4 +1,4 @@
-name: Scan de sécurité Trivy
+name: Trivy Scan
 
 on:
   push:
@@ -10,14 +10,23 @@ on:
 
 jobs:
   security_scan:
-    name: Scan de sécurité
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout du code
+      - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Exécution du scan Trivy
+      - name: Install Trivy
         run: |
-          docker run --rm -v "$(pwd):/src" aquasec/trivy mcr.microsoft.com/dotnet/aspnet:6.0
+          wget https://github.com/aquasecurity/trivy/releases/download/v0.19.2/trivy_0.19.2_Linux-64bit.tar.gz
+          tar zxvf trivy_0.19.2_Linux-64bit.tar.gz
+          sudo mv trivy /usr/local/bin/
+          sudo chmod +x /usr/local/bin/trivy
+
+      - name: Build Docker image
+        run: docker build --file Dockerfile --tag my-image-name:${{ github.sha }} .
+
+      - name: Run Trivy scan
+        run: trivy image my-image-name:${{ github.sha }}
+
 

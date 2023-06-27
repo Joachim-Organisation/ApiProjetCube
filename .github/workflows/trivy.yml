@@ -24,9 +24,9 @@ jobs:
 
           # Extraire l'image du registre des packages
           docker login docker.pkg.github.com -u joachim-organisation -p "${TOKEN}"
-          docker pull docker.pkg.github.com/joachim-organisation/apiprojetcube/apiprojetcube:latest
+          docker pull docker.pkg.github.com/joachim-organisation/apiprojetcube/mcr.microsoft.com/dotnet/aspnet:6.0
 
           # Exécuter le scan Trivy sur l'image extraite
-          docker run --rm -v "$(pwd):/src" aquasec/trivy docker.pkg.github.com/joachim-organisation/apiprojetcube/apiprojetcube:release
+          docker run --rm -v "$(pwd):/src" aquasec/trivy docker.pkg.github.com/joachim-organisation/apiprojetcube/mcr.microsoft.com/dotnet/aspnet:6.0
 
 

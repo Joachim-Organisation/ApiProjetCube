@@ -3,10 +3,10 @@ name: Scan de sécurité Trivy
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     branches:
-      - master
+      - main
 
 jobs:
   security_scan:
@@ -19,14 +19,5 @@ jobs:
 
       - name: Exécution du scan Trivy
         run: |
-          # Récupérer le token d'authentification pour accéder au registre des packages
-          TOKEN=$(echo "${{ secrets.GITHUB_TOKEN }}")
-
-          # Extraire l'image du registre des packages
-          docker login docker.pkg.github.com -u joachim-organisation -p "${TOKEN}"
-          docker pull docker.pkg.github.com/joachim-organisation/apiprojetcube/mcr.microsoft.com/dotnet/aspnet:6.0
-
-          # Exécuter le scan Trivy sur l'image extraite
-          docker run --rm -v "$(pwd):/src" aquasec/trivy docker.pkg.github.com/joachim-organisation/apiprojetcube/mcr.microsoft.com/dotnet/aspnet:6.0
-
+          docker run --rm -v "$(pwd):/src" aquasec/trivy mcr.microsoft.com/dotnet/aspnet:6.0
 

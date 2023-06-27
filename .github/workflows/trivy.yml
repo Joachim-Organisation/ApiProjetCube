@@ -35,7 +35,7 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@7b7aa264d83dc58691451798b4d117d53d21edfe
         with:
-          image-ref: 'docker.io/joachim-organisation/apiprojetcube:image-docker:${{ github.run_number }}'
+          image-ref: 'docker.io/joachim-organisation/image-docker:${{ github.run_number }}'
           format: 'template'
           template: '@/contrib/sarif.tpl'
           output: 'trivy-results.sarif'

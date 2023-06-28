@@ -7,7 +7,7 @@
 name: "Scan de sécurité de Trivy"
 
 on:
-  push:
+  pull_request:
     branches: [ "Production" ]
     
   schedule:

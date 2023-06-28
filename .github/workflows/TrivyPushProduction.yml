@@ -1,4 +1,4 @@
-name: "Scan de sécurité de Trivy"
+name: "Scan de sécurité de Trivy lors de la pull request dans Production"
 
 on:
   pull_request:
@@ -24,7 +24,7 @@ jobs:
 
       - name: Build an image from Dockerfile
         run: |
-          docker build -t docker.io/joachim-organisation/apiprojetcube:${{ github.sha }} .
+          docker build ./ApiProjetCube/ --file ./ApiProjetCube/Dockerfile  -t docker.io/joachim-organisation/apiprojetcube:${{ github.sha }} .
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@7b7aa264d83dc58691451798b4d117d53d21edfe

@@ -78,14 +78,14 @@ jobs:
           
       - name: Close pull request on test failure
         if: ${{ failure() }}
-        uses: curl-actions/http-request@v1
+        uses: tibdex/actions/http-requests@v1
         with:
           method: POST
           url: https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/comments
           headers: |
             Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}
           body: '{"body": "The tests have failed. Closing the pull request."}'
-          fail-status-codes: '422'
+
 
       - name: Stop Docker container
         run: docker stop my_container

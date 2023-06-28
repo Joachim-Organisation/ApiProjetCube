@@ -77,4 +77,12 @@ jobs:
 
       - name: Stop Docker container
         run: docker stop my_container
+      
+      - name: Close pull request on test failure
+        if: ${{ failure() }}
+        uses: peter-evans/close-pull-request@v1
+        with:
+          message: The tests have failed. Closing the pull request.
+          comment-approval: none
+          delete-branch: false
         

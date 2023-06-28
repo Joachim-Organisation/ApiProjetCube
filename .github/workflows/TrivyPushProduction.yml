@@ -77,23 +77,14 @@ jobs:
           
       - name: Close pull request on test failure
         if: ${{ failure() }}
-        uses: actions/github-script@v4
+        uses: curl-actions/http-request@v1
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const pr = context.payload.pull_request;
-            const owner = pr.base.repo.owner.login;
-            const repo = pr.base.repo.name;
-            const prNumber = pr.number;
-
-            const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
-            octokit.pulls.update({
-              owner: owner,
-              repo: repo,
-              pull_number: prNumber,
-              state: 'closed'
-            });
-
+          method: POST
+          url: https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/comments
+          headers: Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}
+          body: '{"body": "The tests have failed. Closing the pull request."}'
+          fail-status-codes: '422'
+          
       - name: Stop Docker container
         run: docker stop my_container
         

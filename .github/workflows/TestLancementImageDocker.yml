@@ -27,8 +27,11 @@ jobs:
 
       - name: Perform additional checks
         run: |
-          # Effectuez des vérifications supplémentaires selon vos besoins
+          # Les différents tests :
+          # Le premier test qui permet de vérifier si l'api fonctionne bien.
           curl http://localhost:8080/health
+          # Le second test qui permet de vérifier une requête GET des messages (Beaucoup de données).
+          curl http://localhost:8080/api/MessageForums/get
 
       - name: Capture logs
         run: |

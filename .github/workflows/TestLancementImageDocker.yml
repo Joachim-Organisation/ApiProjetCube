@@ -35,9 +35,9 @@ jobs:
             count=$(echo "$output" | jq '. | length')
 
             if [[ $count -ge 2 ]]; then
-              echo "At least 2 messages found"
+              echo "Plus de 2 messages ont été trouvés"
             else
-              echo "Less than 2 messages found"
+              echo "Moins de 2 messages ont été trouvé"
               exit 1
             fi
 

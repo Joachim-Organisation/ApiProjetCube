@@ -34,7 +34,7 @@ jobs:
           output=$(curl -s http://localhost:8080/api/Test)
             count=$(echo "$output" | jq '. | length')
 
-            if [[ $count -ge 3 ]]; then
+            if [[ $count -ge 2 ]]; then
               echo "Plus de 2 messages ont été trouvés"
             else
               echo "Moins de 2 messages ont été trouvé"

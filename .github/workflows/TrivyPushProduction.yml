@@ -1,3 +1,4 @@
+name: "Analyse de la viabilité de la branche master lors de la pull request"
 on:
   pull_request:
     branches: [ "Production" ]
@@ -43,3 +44,37 @@ jobs:
         run: |
           echo "More than 3 critical vulnerabilities found. Cancelling the pull request..."
           # Add commands here to cancel the pull request using GitHub API"
+          
+      - name: Start Docker container
+        run: |
+         docker run -d -p 8080:80 --name my_container "ghcr.io/joachim-organisation/apiprojetcube:master" sh -c "while sleep 10; do :; done"
+          sleep 10
+
+      - name: Check container status
+        run: |
+          docker ps -a
+          docker logs my_container
+
+      - name: "Tests d'intégration."
+        run: |
+          # Les différents tests :
+          # Le premier test qui permet de vérifier si l'api fonctionne bien.
+          curl http://localhost:8080/health
+          # Le second test qui permet de vérifier une requête GET des messages (Beaucoup de données).
+          output=$(curl -s http://localhost:8080/api/Test)
+            count=$(echo "$output" | jq '. | length')
+
+            if [[ $count -ge 2 ]]; then
+              echo "Plus de 2 messages ont été trouvés"
+            else
+              echo "Moins de 2 messages ont été trouvé"
+              exit 1
+            fi
+
+      - name: Capture logs
+        run: |
+          docker logs my_container > logs.txt
+
+      - name: Stop Docker container
+        run: docker stop my_container
+        

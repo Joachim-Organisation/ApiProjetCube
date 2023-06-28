@@ -1,0 +1,46 @@
+name: Test Docker Image pour la merge de Master vers Production.
+on:
+  push:
+    branches:
+      - master  # Modifier si nécessaire
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Start Docker container
+        run: |
+         docker run -d -p 8080:80 --name my_container "docker.io/joachim-organisation/apiprojetcube:${{ github.sha }}" sh -c "while sleep 10; do :; done"
+          sleep 10
+
+      - name: Check container status
+        run: |
+          docker ps -a
+          docker logs my_container
+
+      - name: "Tests d'intégration."
+        run: |
+          # Les différents tests :
+          # Le premier test qui permet de vérifier si l'api fonctionne bien.
+          curl http://localhost:8080/health
+          # Le second test qui permet de vérifier une requête GET des messages (Beaucoup de données).
+          output=$(curl -s http://localhost:8080/api/Test)
+            count=$(echo "$output" | jq '. | length')
+
+            if [[ $count -ge 2 ]]; then
+              echo "Plus de 2 messages ont été trouvés"
+            else
+              echo "Moins de 2 messages ont été trouvé"
+              exit 1
+            fi
+
+      - name: Capture logs
+        run: |
+          docker logs my_container > logs.txt
+
+      - name: Stop Docker container
+        run: docker stop my_container

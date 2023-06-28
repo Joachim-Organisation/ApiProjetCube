@@ -74,15 +74,26 @@ jobs:
       - name: Capture logs
         run: |
           docker logs my_container > logs.txt
+          
+      - name: Close pull request on test failure
+        if: ${{ failure() }}
+        uses: actions/github-script@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const pr = context.payload.pull_request;
+            const owner = pr.base.repo.owner.login;
+            const repo = pr.base.repo.name;
+            const prNumber = pr.number;
+
+            const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
+            octokit.pulls.update({
+              owner: owner,
+              repo: repo,
+              pull_number: prNumber,
+              state: 'closed'
+            });
 
       - name: Stop Docker container
         run: docker stop my_container
-      
-      - name: Close pull request on test failure
-        if: ${{ failure() }}
-        uses: peter-evans/close-pull-request@v1
-        with:
-          message: The tests have failed. Closing the pull request.
-          comment-approval: none
-          delete-branch: false
         

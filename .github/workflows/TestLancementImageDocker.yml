@@ -25,7 +25,7 @@ jobs:
           docker ps -a
           docker logs my_container
 
-      - name: Perform additional checks
+      - name: "Tests d'intégration."
         run: |
           # Les différents tests :
           # Le premier test qui permet de vérifier si l'api fonctionne bien.
@@ -34,7 +34,7 @@ jobs:
           output=$(curl -s http://localhost:8080/api/Test)
             count=$(echo "$output" | jq '. | length')
 
-            if [[ $count -ge 2 ]]; then
+            if [[ $count -ge 3 ]]; then
               echo "Plus de 2 messages ont été trouvés"
             else
               echo "Moins de 2 messages ont été trouvé"

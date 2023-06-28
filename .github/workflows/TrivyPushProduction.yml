@@ -22,10 +22,7 @@ jobs:
 
       - name: Build an image from Dockerfile
         run: |
-          docker build -t docker.io/joachim-organisation/apiprojetcube:0b23205081614418e50fbf507ba4b78506f5b75a ./ApiProjetCube/
-
-      - name: Login to Docker registry
-        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+          docker build -t docker.io/joachim-organisation/apiprojetcube:${{ github.sha }} ./ApiProjetCube/
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@7b7aa264d83dc58691451798b4d117d53d21edfe

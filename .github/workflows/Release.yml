@@ -1,0 +1,42 @@
+name: Release Docker image
+on:
+  pull_request:
+    types:
+      - closed
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  release:
+    permissions:
+      packages: write
+    name: Release
+    runs-on: "ubuntu-latest"
+    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'Production'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Pull Docker image
+        run: docker pull docker.io/joachim-organisation/apiprojetcube:master
+
+      - name: Tag Docker image
+        run: docker tag docker.io/joachim-organisation/apiprojetcube:master docker.io/joachim-organisation/apiprojetcube:release-${{ github.sha }}
+
+      - name: Push Docker image
+        run: docker push docker.io/joachim-organisation/apiprojetcube:release-${{ github.sha }}
+
+      - name: Create GitHub release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: release-${{ github.sha }}
+          release_name: Release ${{ github.sha }}
+          body: |
+            This is an automated release triggered by the merge of pull request #${{ github.event.pull_request.number }}.
+          draft: false
+          prerelease: false

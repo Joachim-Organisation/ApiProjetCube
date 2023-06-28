@@ -75,18 +75,12 @@ jobs:
         run: |
           docker logs my_container > logs.txt
           
-          
       - name: Close pull request on test failure
         if: ${{ failure() }}
-        uses: tibdex/actions/http-requests@v1
+        uses: superbrothers/close-pull-request@v3
         with:
-          method: POST
-          url: https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/comments
-          headers: |
-            Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}
-          body: '{"body": "The tests have failed. Closing the pull request."}'
-
-
+          comment: "Les tests pour la mise en production ne sont pas concluants."
+         
       - name: Stop Docker container
         run: docker stop my_container
         

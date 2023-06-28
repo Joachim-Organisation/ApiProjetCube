@@ -3,9 +3,6 @@ on:
   push:
     branches:
       - master  # Modifier si nécessaire
-  pull_request:
-    branches:
-      - master  # Modifier si nécessaire
 
 jobs:
   test:

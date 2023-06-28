@@ -31,8 +31,7 @@ jobs:
           # Le premier test qui permet de vérifier si l'api fonctionne bien.
           curl http://localhost:8080/health
           # Le second test qui permet de vérifier une requête GET des messages (Beaucoup de données).
-          run: |
-            output=$(curl -s http://localhost:8080/api/Test)
+          output=$(curl -s http://localhost:8080/api/Test)
             count=$(echo "$output" | jq '. | length')
 
             if [[ $count -ge 2 ]]; then

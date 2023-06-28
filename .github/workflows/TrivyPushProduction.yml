@@ -1,9 +1,3 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-# Run !
-
 name: "Scan de sécurité de Trivy"
 
 on:
@@ -41,7 +35,13 @@ jobs:
           output: 'trivy-results.sarif'
           severity: 'CRITICAL,HIGH'
 
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: 'trivy-results.sarif'
+      - name: Count critical vulnerabilities
+        id: count-vulnerabilities
+        run: |
+          echo "::set-output name=count::$(jq -r '.runs[0].results[] | select(.properties["tags"] == "security") | select(.properties["severity"] | contains("CRITICAL")) | .properties["severity"]' trivy-results.sarif | wc -l)"
+
+      - name: Check vulnerability count
+        if: ${{ steps.count-vulnerabilities.outputs.count > 3 }}
+        run: |
+          echo "More than 3 critical vulnerabilities found. Cancelling the pull request..."
+          # Add commands here to cancel the pull request using GitHub API

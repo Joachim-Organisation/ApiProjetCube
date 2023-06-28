@@ -31,7 +31,16 @@ jobs:
           # Le premier test qui permet de vérifier si l'api fonctionne bien.
           curl http://localhost:8080/health
           # Le second test qui permet de vérifier une requête GET des messages (Beaucoup de données).
-          curl http://localhost:8080/api/MessageForums
+          run: |
+            output=$(curl -s http://localhost:8080/api/MessageForums)
+            count=$(echo "$output" | jq '. | length')
+
+            if [[ $count -ge 2 ]]; then
+              echo "At least 2 messages found"
+            else
+              echo "Less than 2 messages found"
+              exit 1
+            fi
 
       - name: Capture logs
         run: |

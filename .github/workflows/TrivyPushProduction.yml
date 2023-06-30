@@ -64,7 +64,7 @@ jobs:
           output=$(curl -s http://localhost:8080/api/Test)
             count=$(echo "$output" | jq '. | length')
 
-            if [[ $count -ge 2 ]]; then
+            if [[ $count -ge 3 ]]; then
               echo "Plus de 2 messages ont été trouvés"
             else
               echo "Moins de 2 messages ont été trouvé"
@@ -74,7 +74,13 @@ jobs:
       - name: Capture logs
         run: |
           docker logs my_container > logs.txt
-
+          
+      - name: Close pull request on test failure
+        if: ${{ failure() }}
+        uses: superbrothers/close-pull-request@v3
+        with:
+          comment: "Les tests pour la mise en production ne sont pas concluants."
+         
       - name: Stop Docker container
         run: docker stop my_container
         

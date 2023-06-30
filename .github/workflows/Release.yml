@@ -1,47 +1,41 @@
-name: Release Docker image
-on:
-  pull_request:
-    types:
-      - closed
+name: Proposer une release
 
-permissions:
-  contents: write
-  packages: write
+on:
+  push:
+    branches:
+      - Production
+
+env:
+  # Utiliser docker.io pour Docker Hub si vide
+  REGISTRY: ghcr.io
+  # github.repository sous la forme <compte>/<dépôt>
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  release:
-    permissions:
-      packages: write
-    name: Release
-    runs-on: "ubuntu-latest"
-    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'Production'
+  propose_release:
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Vérifier les modifications
+        id: check_changes
         uses: actions/checkout@v3
-
-      - name: Login to Docker registry
-        uses: docker/login-action@v1
         with:
-          registry: docker.io
-          
-      - name: Pull Docker image
-        run: docker pull docker.io/joachim-organisation/apiprojetcube:master
+          ref: ${{ github.ref }}
+          fetch-depth: 0
 
-      - name: Tag Docker image
-        run: docker tag docker.io/joachim-organisation/apiprojetcube:master docker.io/joachim-organisation/apiprojetcube:release-${{ github.sha }}
-
-      - name: Push Docker image
-        run: docker push docker.io/joachim-organisation/apiprojetcube:release-${{ github.sha }}
-
-      - name: Create GitHub release
+      - name: Proposer une release
+        id: create_release
         uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: release-${{ github.sha }}
-          release_name: Release ${{ github.sha }}
-          body: |
-            This is an automated release triggered by the merge of pull request #${{ github.event.pull_request.number }}.
-          draft: false
+          tag_name: v${{ github.run_number }}
+          release_name: Release v${{ github.run_number }}
+          draft: true
           prerelease: false
+          body: |
+            Une nouvelle version a été proposée en réponse à un push vers la branche Production.
+            - Commits ajoutés depuis la dernière release :
+              ${{ steps.check_changes.outputs.files_modified }}
+
+      - name: Afficher le lien de la proposition de release
+        run: |
+          echo "Proposition de release créée : ${{ steps.create_release.outputs.html_url }}"

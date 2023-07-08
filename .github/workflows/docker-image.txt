@@ -1,6 +1,6 @@
-# run !
+# run 
 
-name: "Création de l'image Docker dans ApiProjetCube."
+name: "Création de l'image Docker dans ApiProjetCube." 
 
 on:
   push:

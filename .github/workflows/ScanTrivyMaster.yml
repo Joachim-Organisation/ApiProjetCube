@@ -4,7 +4,7 @@
 # documentation.
 # Run !
 
-name: "Scan de sécurité de Trivy"
+name: "Scan de sécurité de Trivy Master"
 
 on:
   push:

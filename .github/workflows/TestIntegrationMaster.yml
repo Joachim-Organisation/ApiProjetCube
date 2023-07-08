@@ -1,4 +1,4 @@
-name: Test Docker Image
+name: Test Intégration image Docker Master.
 on:
   push:
     branches:

@@ -1,4 +1,4 @@
-name: "Analyse de la viabilité de la branche master lors de la pull request"
+name: "Analyse de la viabilité de la branche master lors de la pull request !"
 on:
   pull_request:
     branches: [ "Production" ]

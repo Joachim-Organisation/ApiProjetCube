@@ -6,7 +6,7 @@ on:
       - Production
 
 env:
-  # Utiliser docker.io pour Docker Hub si vide
+  # Utiliser docker.io pour Docker Hub si vide !
   REGISTRY: ghcr.io
   # github.repository sous la forme <compte>/<dépôt>
   IMAGE_NAME: ${{ github.repository }}

@@ -1,4 +1,4 @@
-name: workflow api
+name: workflow master api
 
 on:
   push:

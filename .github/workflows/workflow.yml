@@ -176,8 +176,15 @@ jobs:
       # repository is public to avoid leaking data. If you would like to publish
       # transparency data even for private images, pass --force to cosign below.
       # https://github.com/sigstore/cosign
+      # Sign the resulting Docker image digest except on PRs.
+# This will only write to the public Rekor transparency log when the Docker
+# repository is public to avoid leaking data. If you would like to publish
+# transparency data even for private images, pass --force to cosign below.
+# https://github.com/sigstore/cosign
       - name: Sign the published Docker image
         if: ${{ github.event_name != 'pull_request' }}
         env:
           COSIGN_EXPERIMENTAL: "true"
-        run: echo "${{ steps.meta.outputs.tags }}" | xargs -I {} cosign sign {}@${{ steps.build-and-push.outputs.digest }}"
+        run: |
+          echo "${{ steps.meta.outputs.tags }}" | xargs -I {} cosign sign {}@${{ steps.build-and-push.outputs.digest }}
+

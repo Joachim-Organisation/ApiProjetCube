@@ -115,6 +115,11 @@ jobs:
   publish-image:
     runs-on: ubuntu-latest
     needs: [test-integration]
+    env:
+      # Use docker.io for Docker Hub if empty
+      REGISTRY: ghcr.io
+      # github.repository as <account>/<repo>
+      IMAGE_NAME: ${{ github.repository }}
     permissions:
       contents: read
       packages: write

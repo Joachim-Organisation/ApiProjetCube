@@ -1,4 +1,4 @@
-name: Proposer une release
+name: Push Docker image to release
 
 on:
   push:
@@ -6,32 +6,21 @@ on:
       - Production
 
 jobs:
-  propose_release:
+  push:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Vérifier les modifications
-        id: check_changes
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.ref }}
-          fetch-depth: 0
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-      - name: Proposer une release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          tag_name: v${{ github.run_number }}
-          release_name: Release v${{ github.run_number }}
-          draft: true
-          prerelease: false
-          body: |
-            Une nouvelle version a été proposée en réponse à un push vers la branche Production.
-            - Commits ajoutés depuis la dernière release :
-              ${{ steps.check_changes.outputs.files_modified }}
-
-      - name: Afficher le lien de la proposition de release
+      - name: Install Docker
         run: |
-          echo "Proposition de release créée : ${{ steps.create_release.outputs.html_url }}"
+          sudo apt-get update
+          sudo apt-get install docker-ce
+
+      - name: Build image
+        run: |
+          docker build -t joachim-organisation/apiprojetcube:latest .
+
+      - name: Push image
+        run: |
+          docker push joachim-organisation/apiprojetcube:latest

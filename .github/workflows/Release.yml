@@ -1,29 +1,42 @@
+name: Proposer une release
+
 on:
   push:
-    # Sequence of patterns matched against refs/tags
-    tags:
-      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+    branches:
+      - Production
 
-name: Create Release
+env:
+  # Utiliser docker.io pour Docker Hub si vide !
+  REGISTRY: ghcr.io
+  # github.repository sous la forme <compte>/<dépôt>
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  build:
-    name: Create Release
+  propose_release:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Create Release
+      - name: Vérifier les modifications
+        id: check_changes
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 0
+
+      - name: Proposer une release
         id: create_release
         uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: |
-            Changes in this Release
-            - First Change
-            - Second Change
-          draft: false
+          token: ${{ env.RELEASE_TOKEN }}
+          tag_name: v${{ github.run_number }}
+          release_name: Release v${{ github.run_number }}
+          draft: true
           prerelease: false
+          body: |
+            Une nouvelle version a été proposée en réponse à un push vers la branche Production.
+            - Commits ajoutés depuis la dernière release :
+              ${{ steps.check_changes.outputs.files_modified }}
+
+      - name: Afficher le lien de la proposition de release
+        run: |
+          echo "Proposition de release créée : ${{ steps.create_release.outputs.html_url }}"

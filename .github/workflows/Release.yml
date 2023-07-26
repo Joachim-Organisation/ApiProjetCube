@@ -27,6 +27,7 @@ jobs:
         id: create_release
         uses: actions/create-release@v1
         with:
+          token: ${{ secrets.GITHUB_TOKEN }} # Utiliser le token d'accès par défaut du référentiel
           tag_name: v${{ github.run_number }}
           release_name: Release v${{ github.run_number }}
           draft: true
@@ -39,3 +40,4 @@ jobs:
       - name: Afficher le lien de la proposition de release
         run: |
           echo "Proposition de release créée : ${{ steps.create_release.outputs.html_url }}"
+

@@ -27,7 +27,7 @@ jobs:
         id: create_release
         uses: actions/create-release@v1
         with:
-          token: ${{ secrets.RELEASE_TOKEN }} # Use the stored GitHub secret
+          token: ${{ secrets.RELEASE_TOKEN }}
           tag_name: v${{ github.run_number }}
           release_name: Release v${{ github.run_number }}
           draft: true
@@ -36,6 +36,7 @@ jobs:
             Une nouvelle version a été proposée en réponse à un push vers la branche Production.
             - Commits ajoutés depuis la dernière release :
               ${{ steps.check_changes.outputs.files_modified }}
+
 
       - name: Afficher le lien de la proposition de release
         run: |

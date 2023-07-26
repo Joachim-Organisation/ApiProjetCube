@@ -27,7 +27,7 @@ jobs:
         id: create_release
         uses: actions/create-release@v1
         with:
-          token: ${{ env.RELEASE_TOKEN }}
+          token: ${{ github.run_number }}
           tag_name: v${{ github.run_number }}
           release_name: Release v${{ github.run_number }}
           draft: true

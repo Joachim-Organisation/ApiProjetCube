@@ -20,8 +20,9 @@ jobs:
       - name: Proposer une release
         id: create_release
         uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         with:
-          token: ${{ github.token }}
           tag_name: v${{ github.run_number }}
           release_name: Release v${{ github.run_number }}
           draft: true

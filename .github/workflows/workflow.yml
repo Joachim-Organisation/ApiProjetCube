@@ -49,7 +49,7 @@ jobs:
           dotnet build --configuration Release --no-incremental
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
 
-  test:
+  test-securite:
     name: Test and vulnerability scan
     runs-on: ubuntu-20.04
     needs: [build]
@@ -74,7 +74,7 @@ jobs:
         
   test-integration:
     runs-on: ubuntu-latest
-    needs: [test]
+    needs: [test-securite]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
